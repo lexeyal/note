@@ -1,6 +1,13 @@
 .myb{
-background-color: blue;
 width: 250px;
 height: 80px;
 margin: 3px;
+
+background-color: gray;
+
+}
+
+.myb:nth-child(odd){
+background-color: blue;
+
 }
