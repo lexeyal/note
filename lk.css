@@ -11,3 +11,13 @@ background-color: gray;
 background-color: blue;
 
 }
+
+.m_green{
+	height: 80px;
+	background-color: green;
+}
+
+.m_red{
+	height: 80px;
+	background-color: red;
+}

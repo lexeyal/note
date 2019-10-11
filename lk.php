@@ -22,6 +22,38 @@
 	?>
 	
 <div class="conteiner">
+<div class="row">
+	<div class="m_red 
+	col-xs-offset-2 col-xs-8 
+	col-sm-offset-2 col-sm-6
+	col-md-offset-2 col-md-4 
+	col-lg-offset-2 col-lg-3 
+	">1</div>
+	<div class="m_green 
+	col-xs-offset-2 col-xs-8 
+	col-sm-offset-2 col-sm-6 
+	col-md-offset-2 col-md-4 
+	col-lg-offset-2 col-lg-3 
+	">2</div>
+	<div class="m_red 
+	col-xs-offset-2 col-xs-8 
+	col-sm-offset-2 col-sm-6 
+	col-md-offset-2 col-md-4 
+	col-lg-offset-2 col-lg-3 
+	">3</div>
+	<div class="m_green 
+	col-xs-offset-2 col-xs-8 
+	col-sm-offset-2 col-sm-6 
+	col-md-offset-2 col-md-4 
+	col-lg-offset-2 col-lg-3 
+	">4</div>
+	
+</div>
+	<div class=""></div>
+	<div class=""></div>
+	<div class=""></div>
+
+	<div class="myb <?php echo $m_class;?>">Lore</div>
 	<div class="myb <?php echo $m_class;?>">Lore</div>
 	<div class="myb <?php echo $m_class;?>">Lor*20</div>
 	<div class="myb <?php echo $m_class;?>">
