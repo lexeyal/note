@@ -27,6 +27,47 @@
 <div class="m_post">
 	
 <pre name="z1">
+20191025
+bash канкатенация
+$ echo 'dd'"ff"
+ddff
+$ echo "dd""ff"
+ddff
+в скрипте ДАЖЕ ТАК можно
+$ echo `date '+%Y-%m-%d %H:%M:%S start процесс'`
+
+Прикольненько!
+===========================================
+понадобилось посчитать количество 
+каталогов и файлов в папке
+$ find ./ -type d -name "*" | wc -l
+$ find ./ -type f -name "*" | wc -l
+PS. текущий тоже считает!
+===========================================
+https://losst.ru/rsync-primery-sinhronizatsii
+связь медленная переделал скрипт архивирования
+
+#!/bin/sh
+# v1.0
+datestamp=`date +'%Y-%m-%d'`
+whatp='/home/********/'
+whatf='*******'
+log="./log.txt"
+
+##
+echo `date` >> $log
+echo "start sync" >> $log
+rsync --progress --delete -aogvze "ssh -p ****" **********@*********:$whatp$whatf ./
+$whatf ./
+echo `date` >> $log
+echo "start tgz" >> $log
+tar -czf ./$datestamp-$whatf.tgz ./$whatf
+echo `date` >> $log
+echo "end" >> $log
+echo "===================================" >> $log
+
+exit 0
+
 
 20191024
 cake выдал
@@ -52,8 +93,8 @@ mysqladmin --user=root password "******";
 
 #!/bin/sh
 datestamp=`date +'%Y-%m-%d'`
-ssh -p 1024 host1709070@185.26.122.57 "mysqldump -p -uhost1709070_sibluadmin host1709070_siblubase" > ./$datestamp-host1709070_siblubase.sql
-ssh -p 1024 host1709070@185.26.122.57 "tar -czvf - /home/host1709070/siblu.ru" > ./$datestamp-siblu.tar.gz
+ssh -p **** ********@******* "mysqldump -p -u********* **********" > ./$datestamp-s.sql
+ssh -p **** ********@******* "tar -czvf - /home/*******/*****" > ./$datestamp-s.tgz
 
 exit 0
 
