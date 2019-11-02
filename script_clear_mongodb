@@ -1,0 +1,127 @@
+Сценарий Prune (для справок)
+
+Ниже для справок приведен текст сценария для удаления старых данных:
+
+// Поддержка данных, накопленных в течение N дней var days=7;
+
+// Замените на false, чтобы сценарий действительно удалял старые записи
+// из базы данных. Пока значение равно true, никаких изменений в базе данных производиться не будет var dryrun=true;
+
+var now = new Date().getTime(),
+
+time_criteria = now — days * 86400 * 1000,
+time_criteria_in_seconds = time_criteria / 1000;
+
+print((dryrun ? «[dryrun] » : «») + «pruning data older than » + days + » days (» + time_criteria + «)… «);
+
+use ace;
+
+var collectionNames = db.getCollectionNames();
+
+for (i=0; i<collectionNames.length; i++) {
+
+var name = collectionNames[i];
+var query = null;
+
+if (name === ‘event’ || name === ‘alarm’) {
+
+query = {time: {$lt:time_criteria}};
+
+}
+
+// ненадежная точка доступа
+
+if (name === ‘rogue’) {
+
+query = {last_seen: {$lt:time_criteria_in_seconds}};
+
+}
+
+// удаляет квитанции чеков, срок хранения которых превышает ‘$days’ дней
+
+// активные и неиспользованные квитанции НЕ ТРОГАЕМ
+
+if (name === ‘voucher’) {
+
+query = {end_time: {$lt:time_criteria_in_seconds}};
+
+}
+
+// авторизация гостя
+
+if (name === ‘guest’) {
+
+query = {end: {$lt:time_criteria_in_seconds}};
+
+}
+
+// если пользователь был замечен только ОДНАЖДЫ, $last_seen не будет определена
+// Итак, если $last_seen не определена, будем вместо нее использовать $first_seen
+// Убедитесь также, что установлена $blocked или $use_fixedip. Если это так, НЕ стирайте
+// элемент списка, неважно, насколько он старый. Нам требуется, чтобы заблокированные пользователи и пользователи с фиксированными ip-адресами продолжали
+// оставаться заблокированными или с зафиксированными
+
+ip-адресами if (name === ‘user’) {
+
+query = { blocked: { $ne: true}, use_fixedip: { $ne: true}, $or: [
+
+{last_seen: {$lt:time_criteria_in_seconds} },
+
+{last_seen: {$exists: false}, first_seen: {$lt:time_criteria_in_seconds} }
+
+]
+
+};
+
+}
+
+if (query) {
+
+count1 = db.getCollection(name).count();
+count2 = db.getCollection(name).find(query).count();
+print((dryrun ? «[dryrun] » : «») + «pruning » + count2 + » entries (total » + count1 + «) from » + name + «… «);
+if (!dryrun) {
+
+db.getCollection(name).remove(query);
+db.runCommand({ compact: name });
+
+}
+
+}
+
+}
+
+use ace_stat;
+
+var collectionNames = db.getCollectionNames();
+
+for (i=0; i<collectionNames.length; i++) {
+
+var name = collectionNames[i];
+var query = null;
+
+// статистики в хронологическом порядке (stat.*)
+
+if (name.indexOf(‘stat’)==0) {
+
+query = {time: {$lt:time_criteria}};
+
+}
+
+if (query) {
+
+count1 = db.getCollection(name).count();
+count2 = db.getCollection(name).find(query).count();
+print((dryrun ? «[dryrun] » : «») + «pruning » + count2 + » entries (total » + count1 + «) from » + name + «… «);
+if (!dryrun) {
+
+db.getCollection(name).remove(query);
+db.runCommand({ compact: name });
+
+}
+
+}
+
+}
+
+if (!dryrun) db.repairDatabase();
