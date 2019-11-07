@@ -1,21 +1,29 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 //echo 'data...';
 //echo 'data..1';
 //echo 'data..2';
 
+
+$p1 = filter_input(INPUT_GET, 'd1');
+$p2 = filter_input(INPUT_GET, 'd2');
+$p3 = filter_input(INPUT_GET, 'd3');
+$p4 = filter_input(INPUT_GET, 'd4');
+
+
+// $arr = array(
+//     'data...',
+//     'data..1',
+//     'data..2'
+// );
+
 $arr = array(
-    'data...',
-    'data..1',
-    'data..2'
+    d1 => $p1,
+    d2 => $p2,
+    d3 => $p3,
+    d4 => $p4
 );
 
 //return $arr;
 var_dump($arr);
+// var_dump($p1);
