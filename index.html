@@ -11,13 +11,13 @@
 
 <div class="m_nav">
 	<div>
-		<a href="#z1">20191001</a>
+		<a href="#1">20191001</a>
 	</div>
 	<div>
 		<a href="#z2">20191003</a>
 	</div>
 	<div>
-		<a href="#z3">20191003</a>
+		<a href="#3">20191003</a>
 	</div>
 </div>
 
@@ -26,7 +26,34 @@
 </div>
 <div class="m_post">
 	
-<pre name="z1">
+<pre id="1">
+20191119
+Для проверки работает ли js
+<xmp>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel='stylesheet' href='../bootstrap/css/bootstrap.min.css' type='text/css' media='all'>
+    </head>
+    <body>
+        <noscript>
+            <p class="alert-danger alert">
+                JavaScript отключен или не поддерживается!</p>
+        </noscript>
+        <main id="js_enabled" class="hide">
+            Основной контент
+        </main>
+        <script>
+            document.getElementById('js_enabled').className = '';
+        </script>
+    </body>
+</html>
+
+</xmp>
+...
+===========================================
 20191107
 1с снова "Установлен безопасный режим..."
 Конфигуратор не видит конфигурацию и пользователей,
@@ -177,7 +204,7 @@ tag 1C
 Так и хочется сказать "Руки прочь от базы", но, увы...
 ===============================================
 </pre>
-<pre name="z2">
+<pre id="z2">
 20191003
 git
 - Если что-то перепутал может помочь
@@ -200,7 +227,7 @@ git сохранил учетку - заходишь в нее и
 !НО - также - создается запись :(
 ===============================================
 </pre>
-<pre name="z3">
+<pre id="3">
 20191003
 читай 
 https://html5book.ru/css-grid/
