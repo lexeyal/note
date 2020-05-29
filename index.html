@@ -27,7 +27,40 @@
 <div class="m_post">
 	
 <pre id="1">
+
+
+===========================================
+20200529
+1с снова ...
+Права слетели...
+...
+===========================================
+https://habr.com/ru/post/171151/	
+
+20200422
+полезная статья
+https://romeogolf.github.io/time_in_bat.html
+https://www.tutorialspoint.com/unix/unix-shell-functions.htm
+https://www.youtube.com/watch?v=UH39RsrwbdE
+
+===========================================
+20200421
+moodle видеть отладочную информацию
+помогла статья
+https://docs.moodle.org/38/en/Configuration_file
+https://docs.moodle.org/38/en/Debugging
+=================================
 20200327
+
+Переписал скрипт, который все делал сам.
+Старый скрипт был на сервере и использовал odbc
+драйвер для подключения к серверу mysql.
+
+Новый берет инфу загружает ее на комп с которого подключились.
+Потом подключается к мускул серверу и отправляет инфу ему.
+В конце на сервере инфа кладется в базу и обновляются таблицы.
+
+На стороне винды
 @ECHO OFF
 REM Выгрузка из базы 1с в mysql базу на www-сервере
 
@@ -89,6 +122,112 @@ GOTO ptest
 ECHO "Time %P_T% more then 30min" > "%P_PATH%err.txt"
 :exit
 
+backup.cmd
+...
+
+REM Заберем последние архивы
+
+SET US="unix_user"
+
+SET PROG="D:\_Work\Putty\PSCP"
+SET KEY="D:\moving\scr\prk1.ppk"
+REM =========================================================
+SET FOLD="D:\moving\*.txt"
+SET IP="192.168.Y.Y"
+%PROG% -i %KEY% %FOLD% %US%@%IP%:backup_sites/5/
+del "D:\moving\ok.txt"
+GOTO EXIT
+:EXIT
+
+Теперь на стороне Linux
+
+start_file_into_db.sh
+...
+
+#!/bin/sh
+cd /home/unix_user/backup_sites/5
+f=./ok.txt
+if [ -f $f ]
+then
+echo "ok"
+rm $f
+echo `date`" - start" >> ./log.log
+/bin/sh ./scr.sh >> ./log.log
+echo `date`" - stop" >> ./log.log
+else
+echo "no"
+fi
+
+exit 0
+
+scr.sh
+...
+
+#!/bin/sh
+
+#
+# First action. Files put into tables/
+#
+
+put_into_mysql () {
+
+p="pass"
+u="user"
+h="localhost"
+b="base"
+
+d=`date '+%Y%m%d'`
+
+mysql -p$p -u$u $b < $1
+n=$2
+c=`mysql -p$p -u$u $b -s -r -e "SELECT COUNT(*) FROM $n"`
+t=`date '+%H:%M:%S'`
+mysql -p$p -u$u $b -e "INSERT INTO my_info SET date='$d',m_time='$t', name_table
+echo "$n - ok!"
+
+}
+
+
+put_into_mysql ./gr.txt new_vse_gruppy
+put_into_mysql ./asp.txt new_aspirants
+put_into_mysql ./d.txt new_discipliny
+put_into_mysql ./lp.txt new_log_pass
+put_into_mysql ./st.txt new_students
+put_into_mysql ./sp.txt new_specialnosty
+put_into_mysql ./sz.txt new_specializaciya
+put_into_mysql ./ug.txt new_uchebniy_god
+put_into_mysql ./up.txt new_uroven_podgotovky
+put_into_mysql ./fo.txt new_forma_obucheniya
+
+#
+# Rotation table in db
+#
+rot() {
+t=$1
+p="pass"
+u="user"
+b="base"
+
+mysql -p$p -u$u $b -e "DROP TABLE IF EXISTS old_$t"
+mysql -p$p -u$u $b -e "ALTER TABLE $t RENAME old_$t"
+mysql -p$p -u$u $b -e "ALTER TABLE new_$t RENAME $t"
+}
+
+rot vse_gruppy
+rot aspirants
+rot discipliny
+rot log_pass
+rot students
+rot specialnosty
+rot specializaciya
+rot uchebniy_god
+rot uroven_podgotovky
+rot forma_obucheniya
+
+exit 0
+
+Вот такие заморочки
+
 
 
 20200326
@@ -148,8 +287,8 @@ https://pro1c8.ru/vizvat-proceduru-modulya-objekta/
 КонецПроцедуры
 ===========================================
 20200324
-Выключен бухгалтерский шлюз.
-1с находила 190-й через него.
+Выключен бухгалтерский шлюз. :(
+1с находила 190-й через него. :(
 ...
 ===========================================
 20200323
